@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: opendatahub-edge-collector
+
+resources:
+  - postgres-create-table.yaml
+  - postgres-deployment.yaml
+  - postgres-service.yaml
+  - todo-deployment.yaml
+  - todo-insert-data.yaml
+  - todo-namespace.yaml
+  - todo-route.yaml
+  - todo-service.yaml
