@@ -41,7 +41,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: 'https://github.com/opendatahub-io/ai-edge.git'
+        repoURL: 'https://github.com/lucalann/ai-edge.git'
         targetRevision: main
         path: acm/odh-edge/apps/app
       destination:
