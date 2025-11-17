@@ -8,3 +8,4 @@ resources:
 - overlays/bike-rental-app
 - overlays/tensorflow-housing-app
 - overlays/opentelemetry
+- overlays/todo
