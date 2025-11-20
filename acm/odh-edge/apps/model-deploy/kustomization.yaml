@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: my-first-model
+
+resources:
+  - llama-32-3b-instruct-inference-service.yaml
+  - llama-32-3b-instruct-secrect.yaml
+  - llama-32-3b-instruct-serving-runtime.yaml
+  - namespace.yaml
