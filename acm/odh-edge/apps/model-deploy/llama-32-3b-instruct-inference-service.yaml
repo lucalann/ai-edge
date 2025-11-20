@@ -36,10 +36,8 @@ spec:
         limits:
           cpu: '4'
           memory: 16Gi
-          nvidia.com/gpu: '1'
         requests:
           cpu: '1'
           memory: 6Gi
-          nvidia.com/gpu: '1'
       runtime: llama-32-3b-instruct
-      storageUri: 'oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-3b-instruct'
+      storageUri: 'oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-1b-instruct'
