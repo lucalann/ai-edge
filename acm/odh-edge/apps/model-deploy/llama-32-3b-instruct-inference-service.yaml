@@ -42,4 +42,4 @@ spec:
           memory: 6Gi
           nvidia.com/gpu: '1'
       runtime: llama-32-3b-instruct
-      storageUri: 'oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-3b-instruct
+      storageUri: 'oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-3b-instruct'
