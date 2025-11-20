@@ -10,7 +10,7 @@ patches:
 - patch: |-
     - op: replace
       path: /spec/template/metadata/name
-      value: '{{name}}-model-deploy'
+      value: 'model-deploy'
     - op: replace
       path: /spec/template/spec/source/path
       value: acm/odh-edge/apps/model-deploy
