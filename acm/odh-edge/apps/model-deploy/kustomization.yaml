@@ -7,3 +7,4 @@ resources:
   - llama-32-3b-instruct-inference-service.yaml
   - llama-32-3b-instruct-secrect.yaml
   - namespace.yaml
+  - serving.yaml
