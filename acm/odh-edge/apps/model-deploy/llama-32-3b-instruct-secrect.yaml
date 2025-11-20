@@ -2,7 +2,7 @@ kind: Secret
 apiVersion: v1
 metadata:
   name: llama-32-3b-instruct
-  namespace: my-first-model
+  namespace: model-deploy
   labels:
     opendatahub.io/dashboard: 'true'
   annotations:

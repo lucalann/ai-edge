@@ -10,7 +10,7 @@ metadata:
     opendatahub.io/template-name: vllm-cuda-runtime-template
     openshift.io/display-name: vLLM NVIDIA GPU ServingRuntime for KServe
   name: llama-32-3b-instruct
-  namespace: my-first-model
+  namespace: model-deploy
   labels:
     opendatahub.io/dashboard: 'true'
 spec:
