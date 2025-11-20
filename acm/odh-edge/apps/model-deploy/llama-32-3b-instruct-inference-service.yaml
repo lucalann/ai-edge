@@ -2,9 +2,9 @@ apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
   annotations:
-    openshift.io/display-name: llama-3.2-1b-instruct
+    openshift.io/display-name: llama3
     serving.kserve.io/deploymentMode: RawDeployment
-  name: llama-3.2-1b-instruct
+  name: llama3
   namespace: model-deploy
   labels:
     networking.kserve.io/visibility: exposed
