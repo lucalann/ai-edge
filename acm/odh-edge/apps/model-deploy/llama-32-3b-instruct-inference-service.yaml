@@ -25,5 +25,5 @@ spec:
         requests:
           cpu: '1'
           memory: 4Gi
-      runtime: vllm-runtime
+      runtime: vllm-runtime-copy
       storageUri: 'oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-1b-instruct'
