@@ -6,6 +6,6 @@ namespace: model-deploy
 resources:
   - llama-32-3b-instruct-inference-service.yaml
   - llama-32-3b-instruct-secrect.yaml
-  - llama-32-3b-instruct-serving-runtime.
+  - llama-32-3b-instruct-serving-runtime.yaml
   - llamaServingcpu.yaml
   - namespace.yaml
