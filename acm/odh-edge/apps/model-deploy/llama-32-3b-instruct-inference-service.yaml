@@ -4,6 +4,7 @@ metadata:
   annotations:
     openshift.io/display-name: llama-3.2-1b-instruct
     serving.kserve.io/deploymentMode: RawDeployment
+  name: llama-3.2-1b-instruct
   namespace: model-deploy
   labels:
     networking.kserve.io/visibility: exposed
