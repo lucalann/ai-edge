@@ -2,12 +2,20 @@ apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
   annotations:
-    openshift.io/display-name: llama3
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Prune=false
+    argocd.argoproj.io/sync-wave: '2'
+    openshift.io/display-name: edge-inference
+    serving.knative.openshift.io/enablePassthrough: 'true'
     serving.kserve.io/deploymentMode: RawDeployment
-  name: llama3
+    sidecar.istio.io/inject: 'true'
+    sidecar.istio.io/rewriteAppHTTPProbers: 'true'
+  name: edge-inference
   namespace: model-deploy
+  finalizers:
+    - inferenceservice.finalizers
+    - odh.inferenceservice.finalizers
   labels:
-    networking.kserve.io/visibility: exposed
     opendatahub.io/dashboard: 'true'
 spec:
   predictor:
@@ -15,15 +23,20 @@ spec:
     maxReplicas: 1
     minReplicas: 1
     model:
+      args:
+        - '--port=8080'
+        - '--model=/mnt/models'
+        - '--max-model-len=2048'
+        - '--tensor-parallel-size=1'
       modelFormat:
         name: vLLM
       name: ''
       resources:
         limits:
-          cpu: '2'
-          memory: 8Gi
+          cpu: '4'
+          memory: 6Gi
         requests:
-          cpu: '1'
-          memory: 4Gi
-      runtime: vllm-runtime-copy
-      storageUri: 'oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-3b-instruct'
+          cpu: '4'
+          memory: 5Gi
+      runtime: vllm-cpu
+      storageUri: 'oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-1b-instruct'
