@@ -3,6 +3,7 @@ kind: Route
 metadata:
   annotations:
     openshift.io/host.generated: "true"
+    haproxy.router.openshift.io/timeout: 120s
   creationTimestamp: "2025-11-24T17:38:38Z"
   labels:
     app: isvc.edge-inference-predictor
