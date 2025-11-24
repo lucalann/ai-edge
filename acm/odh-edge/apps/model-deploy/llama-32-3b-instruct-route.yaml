@@ -4,9 +4,7 @@ metadata:
   annotations:
     openshift.io/host.generated: "true"
     haproxy.router.openshift.io/timeout: 120s
-  creationTimestamp: "2025-11-24T17:38:38Z"
   labels:
-    app: isvc.edge-inference-predictor
     app.kubernetes.io/instance: model-deploy
     component: predictor
     opendatahub.io/dashboard: "true"
