@@ -1,0 +1,22 @@
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: "true"
+  creationTimestamp: "2025-11-24T17:38:38Z"
+  labels:
+    app: isvc.edge-inference-predictor
+    app.kubernetes.io/instance: model-deploy
+    component: predictor
+    opendatahub.io/dashboard: "true"
+    serving.kserve.io/inferenceservice: edge-inference
+  name: edge-inference-predictor
+  namespace: model-deploy
+spec:
+  host: edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local
+  port:
+    targetPort: http1
+  to:
+    kind: Service
+    name: edge-inference-predictor
+    weight: 100
+  wildcardPolicy: None
