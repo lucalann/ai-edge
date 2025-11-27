@@ -39,5 +39,5 @@ spec:
           cpu: '4'
           memory: 5Gi
       runtime: vllm-cpu
-      storageUri: 'oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-1b-instruct'
-      #storageUri: 'oci://quay.io/rh-aiservices-bu/qwen2.5-0.5b-quantized.w8a8-modelcar:0.0.1'
+      #storageUri: 'oci://quay.io/redhat-ai-services/modelcar-catalog:llama-3.2-1b-instruct'
+      storageUri: 'oci://quay.io/rh-aiservices-bu/qwen2.5-0.5b-quantized.w8a8-modelcar:0.0.1'
