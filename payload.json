@@ -1,0 +1,12 @@
+{
+  "temperature": 0.01,
+  "max_tokens": 128,
+  "top_p": 0.9,
+  "presence_penalty": 0.5,
+  "messages": [
+    {
+      "role": "user",
+      "content": "Dati:\nComponente: Compressore aria\nVibrazioni: 4.9 mm/s (limite 5.0)\nTemperatura: 84°C (limite 85)\nPressione: stabile\nRumorosità: +3 dB sopra la norma\nTrend: vibrazioni in salita del 0.2 mm/s per ora\nIl componente è prossimo al guasto? Rispondi con una previsione (Alta / Media / Bassa)"
+    }
+  ]
+}
