@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: grafana-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: grafana-sa-prom-read
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: monitoring-rules-view
+subjects:
+  - kind: ServiceAccount
+    name: grafana-sa
+    namespace: model-deploy
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: grafana-sa-prom-read
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: monitoring-rules-view
+subjects:
+  - kind: ServiceAccount
+    name: grafana-sa
+    namespace: user-grafana
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: grafana-sa
+  namespace: user-grafana
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDataSource
+metadata:
+  name: prometheus-ds
+  namespace: user-grafana
+spec:
+  name: prometheus-ds.yaml
+  datasources:
+    - name: prometheus
+      type: prometheus
+      access: proxy
+      isDefault: true
+
+      # URL interno al cluster
+      url: https://thanos-querier.openshift-monitoring.svc:9091
+
+      # Importante: no auth + autenticazione custom header
+      basicAuth: false
+      withCredentials: false
+      editable: true
+
+      jsonData:
+        tlsSkipVerify: true
+        httpHeaderName1: "Authorization"
+
+      secureJsonData:
+        httpHeaderValue1: "Bearer <eyJhbGciOiJSUzI1NiIsImtpZCI6ImlncUdiZFE3dzZPaGNTaVd0RXJsWUJmWE02VGo3dno5ZnIwM2w1OERrSUkifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjIl0sImV4cCI6MTc2NDYwMjE2MiwiaWF0IjoxNzY0NTk4NTYyLCJpc3MiOiJodHRwczovL2t1YmVybmV0ZXMuZGVmYXVsdC5zdmMiLCJqdGkiOiI3NDY1N2M5ZC1kNzY0LTRiNDMtYjJmNy1jMmM5ODE1NzhlNTQiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6Im1vZGVsLWRlcGxveSIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJncmFmYW5hLXNhIiwidWlkIjoiZmZiYjQ4YmItNTc5My00OTA3LWI1MTktZmM5YTBlZjAyZDAyIn19LCJuYmYiOjE3NjQ1OTg1NjIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDptb2RlbC1kZXBsb3k6Z3JhZmFuYS1zYSJ9.nBGVRqk7oXaymq8gey0OQfAo2XnRjE6RPhy9KNjYj7I44Ml0CoeeXJuh34jwYoVNKPivKVxdcDVFSeZaQ2y5WQhlhwzixJUJSRP0j56gMtrYMQAxZoo0FddrCGrDW7ViG2fwvTEX8no3p-uBNnR4yyDCzQGweO1PiGSnrMTC1Cq4zNL_1KCijChWji3XoaVv18_aaJqvawnC6DZNV5TDqsrJ28zuH885OD1afIQMD4XP07Ak9HDBLVqHWj31nDcHCQ2d7bmuLniVkF2HwzGz1KCEEN9dxKAXwbtK9X0j8rh4gJ1ySDKS6GekSfRNetGtIt69Q7ma2pEjYOt1ZO7_F47dnIuAzda9qUDEc1owU2ye3LEKjAb2jCPGVxsvvzwz32WKHiBVdRbthVMgPDQqexr5Vy9lLbdSvWFupcjLqxWqdVKdKwFE2pVxb_7SAyX7pIrX57w5fyq1CRBcRhpF7O6o4UXeFTOUrD9dWnsQVvA9mQC6yqQ-tJCghHBAL5JWctGlDOLEAs2MJS-o4t8FPAqU6Q3o5D1MJNROC5v-a9amGGl1x1WRVlfkwcYeZ_0JLcTl_TS2GsBU3S0lBC6SlFVZ-odcSG-x0c29HWrZC6wBTg1MWDTgwHHAVRJ9uzpVMhWvZnXAwDbW5BWWdSZoQT5Zo2x59_A9anuNJ0qDr0E>"
