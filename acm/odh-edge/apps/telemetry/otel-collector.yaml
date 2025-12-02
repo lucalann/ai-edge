@@ -21,8 +21,7 @@ spec:
               scrape_interval: 5s
               static_configs:
                 - targets:
-                    - tensorflow-housing-app-model-1.tensorflow-housing-app.svc.cluster.local:8080
-                    - bike-rental-app-model-1.bike-rental-app.svc.cluster.local:8082
+                    - http://edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local/
     exporters:
       prometheus:
         endpoint: 0.0.0.0:8889
