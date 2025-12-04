@@ -10,44 +10,25 @@ spec:
   observability:
     metrics:
       enableMetrics: true
-  env:
-    - name: OBSERVATORIUM_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: observatorium-token-secret   # Secret contenente token per remote write
-          key: token
   config: |
     receivers:
       prometheus:
         config:
           scrape_configs:
             - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-              job_name: model-metrics
+              job_name: otel-collector
               metrics_path: /metrics
               scrape_interval: 5s
               static_configs:
                 - targets:
                     - edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local
-
     exporters:
-      prometheusremotewrite/core:
-        endpoint: "https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/v1/receive"
-        tls:
-          insecure: false
-        headers:
-          Authorization: "Bearer ${OBSERVATORIUM_TOKEN}"
-
-    processors:
-      batch:
-        send_batch_size: 10000
-        timeout: 1s
-
+      prometheus:
+        endpoint: 0.0.0.0:8889
     service:
       pipelines:
         metrics:
+          exporters:
+            - prometheus
           receivers:
             - prometheus
-          processors:
-            - batch
-          exporters:
-            - prometheusremotewrite/core
