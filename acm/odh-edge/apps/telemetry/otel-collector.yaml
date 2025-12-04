@@ -21,7 +21,7 @@ spec:
               scrape_interval: 5s
               static_configs:
                 - targets:
-                    - http://edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local/
+                    - edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local
     exporters:
       prometheus:
         endpoint: 0.0.0.0:8889
