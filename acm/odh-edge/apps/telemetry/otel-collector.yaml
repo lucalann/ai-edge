@@ -27,7 +27,7 @@ spec:
       prometheusremotewrite/core:
         endpoint: "https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/v1/receive"
         tls:
-          insecure: false
+          insecure: true
     processors:
       batch:
         send_batch_size: 10000
