@@ -22,29 +22,22 @@ spec:
               scrape_interval: 5s
               static_configs:
                 - targets:
-                    - edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.loca
+                    - edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local
     exporters:
-      prometheusremotewrite:
+      prometheusremotewrite/core:
         endpoint: "https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/v1/receive"
-
-        # AUTENTICAZIONE (OCP OAuth token)
-        auth:
-          authenticator: bearer
-
         tls:
-          insecure_skip_verify: true   # solo per test
-
-      logging:
-        verbosity: detailed   # debug
-
-    extensions:
-      bearer:
-        token: "/var/run/secrets/kubernetes.io/serviceaccount/token"
-
+          insecure: true
+    processors:
+      batch:
+        send_batch_size: 10000
+        timeout: 1s
     service:
-      extensions: [bearer]
       pipelines:
         metrics:
-          receivers: [prometheus]
-          processors: [attributes, batch]
-          exporters: [prometheusremotewrite, logging]
+          receivers:
+            - prometheus
+          processors:
+            - batch
+          exporters:
+            - prometheusremotewrite/core
