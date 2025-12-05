@@ -3,48 +3,56 @@ kind: OpenTelemetryCollector
 metadata:
   name: cluster-collector
   namespace: opendatahub-edge-collector
-  labels:
-    app.kubernetes.io/managed-by: opentelemetry-operator
 spec:
   mode: deployment
   observability:
     metrics:
       enableMetrics: true
-  env:
+
   config: |
     receivers:
       prometheus:
         config:
           scrape_configs:
-            - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-              job_name: model-metrics
+            - job_name: model-metrics
               metrics_path: /metrics
               scrape_interval: 5s
+              bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
               static_configs:
                 - targets:
                     - edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.loca
+
+    processors:
+      batch:
+        timeout: 5s
+        send_batch_size: 1000
+      attributes:
+        actions:
+          - key: source
+            value: "edge-collector"
+            action: insert
+
     exporters:
       prometheusremotewrite:
         endpoint: "https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/v1/receive"
 
-        # AUTENTICAZIONE (OCP OAuth token)
         auth:
-          authenticator: bearer
+          authenticator: bearertokenauth
 
         tls:
-          insecure_skip_verify: true   # solo per test
+          insecure_skip_verify: true
 
-      logging:
-        verbosity: detailed   # debug
+      debug:
+        verbosity: detailed
 
     extensions:
-      bearer:
+      bearertokenauth:
         token: "/var/run/secrets/kubernetes.io/serviceaccount/token"
 
     service:
-      extensions: [bearer]
+      extensions: [bearertokenauth]
       pipelines:
         metrics:
           receivers: [prometheus]
           processors: [attributes, batch]
-          exporters: [prometheusremotewrite, logging]
+          exporters: [prometheusremotewrite, debug]
