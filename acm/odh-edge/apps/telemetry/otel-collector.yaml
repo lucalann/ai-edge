@@ -34,12 +34,13 @@ spec:
 
     exporters:
       prometheusremotewrite:
-        endpoint: "http://observatorium-api-http.apps.baremetal2.acic.local/api/metrics/v1/default/api/v1/receive/api/metrics/v1/default/api/v1/receive"
+        endpoint: "https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/metrics/v1/default/api/v1/receive"
 
         auth:
           authenticator: bearertokenauth
 
         tls:
+          ca_file: "/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
           insecure: true
           insecure_skip_verify: true
 
