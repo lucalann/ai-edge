@@ -40,6 +40,8 @@ spec:
           authenticator: bearertokenauth
 
         tls:
+          insecure: true
+          ca_file: "/etc/pki/ca-trust/source/service-ca/service-ca.crt"
           insecure_skip_verify: true
 
       debug:
