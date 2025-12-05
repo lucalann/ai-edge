@@ -34,7 +34,7 @@ spec:
 
     exporters:
       prometheusremotewrite:
-        endpoint: "http://http://observatorium-api-http.apps.baremetal2.acic.local/api/metrics/v1/default/api/v1/receive/api/metrics/v1/default/api/v1/receive"
+        endpoint: "http://observatorium-api-http.apps.baremetal2.acic.local/api/metrics/v1/default/api/v1/receive/api/metrics/v1/default/api/v1/receive"
 
         auth:
           authenticator: bearertokenauth
