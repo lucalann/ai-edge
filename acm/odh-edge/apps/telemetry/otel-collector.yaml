@@ -25,23 +25,19 @@ spec:
       prometheus:
         config:
           scrape_configs:
-            - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-              job_name: model-metrics
+            - job_name: model-metrics
               metrics_path: /metrics
               scrape_interval: 5s
               static_configs:
                 - targets:
                     - edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local
+              bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+              relabel_configs:
+                - source_labels: [handler]
+                  regex: ^$
+                  replacement: unknown
+                  action: replace
     processors:
-      transform/label_fix:
-        metrics:
-          - include: ".*"       # tutte le metriche
-            action: update_label
-            label: handler      # qui puoi aggiungere altre label come "method", ecc.
-            new_label: handler
-            value: "unknown"
-            match_type: strict
-            regex: "^$"
       batch: {}
       memory_limiter:
         check_interval: 1s
@@ -52,7 +48,7 @@ spec:
           - key: source
             value: rhde
             action: insert
-          # Rimuove label che causano errori 409
+          # rimuovi label che generano errori 409
           - key: process.executable.path
             action: delete
           - key: process.command
@@ -76,9 +72,9 @@ spec:
           authenticator: bearertokenauth
     extensions:
       bearertokenauth:
-        token: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkWHhoRER4R09PM1pHRXNMSlBWTmRQZDl0aWVVcHpKbVYxX3ZMaEpNTVEifQ"
+        token: "<IL_TUO_BEARER_TOKEN>"
     service:
-      extensions:
+      extensions: 
         - bearertokenauth
       pipelines:
         metrics:
@@ -87,7 +83,6 @@ spec:
           processors:
             - memory_limiter
             - resource
-            - transform/label_fix
             - batch
           exporters:
             - debug
