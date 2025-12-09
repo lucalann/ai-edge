@@ -38,7 +38,9 @@ spec:
         resource_to_telemetry_conversion:
           enabled: true
     processors:
-      batch: {}
+      batch:
+        send_batch_size: 10000
+        timeout: 1s
       memory_limiter:
         check_interval: 1s
         limit_percentage: 75
