@@ -32,12 +32,6 @@ spec:
               static_configs:
                 - targets:
                     - edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local
-              relabel_configs:
-                - source_labels: [handler]
-                  regex: ^$
-                  replacement: unknown
-                  target_label: handler
-                  action: replace
     processors:
       memory_limiter:
         check_interval: 1s
@@ -66,8 +60,6 @@ spec:
           ca_file: /etc/mco/ca/ca.crt
           insecure: true
           insecure_skip_verify: true
-        resource_to_telemetry_conversion:
-          enabled: true
         auth:
           authenticator: bearertokenauth
     extensions:
