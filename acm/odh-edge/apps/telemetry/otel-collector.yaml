@@ -54,18 +54,6 @@ spec:
         check_interval: 1s
         limit_percentage: 75
         spike_limit_percentage: 25
-      resource:
-        attributes:
-          - key: source
-            value: rhde
-            action: insert
-          # fix "Permanent error: Permanent error: Permanent error: remote write returned HTTP status 409 Conflict; err = %!w(<nil>): add 1377 series: label set contains a label with empty name or value
-          - key: process.executable.path
-            action: delete
-          - key: process.command
-            action: delete
-          - key: process.command_line
-            action: delete
     receivers:
       prometheus:
         config:
