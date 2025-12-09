@@ -52,7 +52,7 @@ spec:
     exporters:
       debug:
         verbosity: detailed
-      prometheusremotewrite:
+      remotewrite:
         endpoint: https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/metrics/v1/default/api/v1/receive
         write_relabel_configs:
         - source_labels: [handler]
