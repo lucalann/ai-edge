@@ -64,7 +64,7 @@ spec:
           authenticator: bearertokenauth
     extensions:
       bearertokenauth:
-        token: "<IL_TUO_BEARER_TOKEN>"
+        token: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkWHhoRER4R09PM1pHRXNMSlBWTmRQZDl0aWVVcHpKbVYxX3ZMaEpNTVEifQ"
     service:
       extensions:
         - bearertokenauth
