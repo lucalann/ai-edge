@@ -53,7 +53,7 @@ spec:
       debug:
         verbosity: detailed
       remotewrite:
-        endpoint: https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/metrics/v1/default/api/v1/receive
+        endpoint: https://thanos-querier-openshift-monitoring.apps.baremetal2.acic.local/api/v1/otlp
         write_relabel_configs:
         - source_labels: [handler]
           regex: ^$
