@@ -36,6 +36,11 @@ spec:
           insecure_skip_verify: true
         resource_to_telemetry_conversion:
           enabled: true
+        auth:
+          authenticator: bearertokenauth
+    extensions:
+      bearertokenauth:
+        token: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkWHhoRER4R09PM1pHRXNMSlBWTmRQZDl0aWVVcHpKbVYxX3ZMaEpNTVEifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjIl0sImV4cCI6MTc5NjQ4ODIwMywiaWF0IjoxNzY0OTUyMjAzLCJpc3MiOiJodHRwczovL2t1YmVybmV0ZXMuZGVmYXVsdC5zdmMiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6Im9wZW4tY2x1c3Rlci1tYW5hZ2VtZW50LW9ic2VydmFiaWxpdHkiLCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZWRnZS1tZXRyaWNzLXdyaXRlciIsInVpZCI6IjEwNDlkNzJhLTBkMzQtNGJkYS1hMzU4LTA3MjhhNDViYWE1ZiJ9fSwibmJmIjoxNzY0OTUyMjAzLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6b3Blbi1jbHVzdGVyLW1hbmFnZW1lbnQtb2JzZXJ2YWJpbGl0eTplZGdlLW1ldHJpY3Mtd3JpdGVyIn0.R0Jr7ve3HBEM2jwzy3NGPjMP5NqRsjeiO51nVnIeey58wFLGKjzYSRKiobkhVnhDxUHcBoR2QXOrjTfLKgrk4ywIJONCZ_adbmCUYGSURm8MXtL7cYzzZY82eVqhwh28HRiSyps5K479u7feuu7tW7wlQVhomnhgOzpYIg4if17sa1TiQ8XmH23fxKxuKkcDlk3MRMBT0kHPTTOqsky4Bu0NdHis5jqoYSykFSncTg6ZfTi3NGQ95BhM-G2pDjBHZW6JycKQZTCdtrKtthFuBB1o-qORkFaMA2y9FreCEvkHOwvCxfo-QCES-EeZIzQL2mnn-Fm_7DI-0J0PFI5ZbrvAwcUQxDzUQs2uvDPq60L39Z-ZHLVyBOkjDMEPzN1EVIkor51C6ZKutUltpvLr51d-6gbJk7Fd0JvCWM_2L-wRYCgxQHQQ4qSznjqeTzpQFxElueqL3jqfT0dpy0d7NTdUb0kURotG3Xg2xvtNUdjTb-TykFHkxgMDO8cACy2jZbdLH9aodTaTwLuv6Wqkntzqfl0hHzZPBXQDCd4WfM_b_xETCHhK94v6R1cg5B097QiP5_4NTyW1mc-JkXq05IXr2GIhlAfimatYj41KX7PMFd57FeLFUq1Gtvfj2oC9HslPgZ_shncEp7fcwbnL4w_1I6JREJuZI7RgaKvnawY"
     processors:
       batch: {}
       memory_limiter:
@@ -66,6 +71,8 @@ spec:
                 - targets:
                     - edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local
     service:
+      extensions: 
+        - bearertokenauth
       pipelines:
         metrics:
           receivers:
