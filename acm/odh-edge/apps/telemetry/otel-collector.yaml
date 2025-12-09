@@ -28,27 +28,27 @@ spec:
             - job_name: model-metrics
               metrics_path: /metrics
               scrape_interval: 5s
+              bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
               static_configs:
                 - targets:
                     - edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local
-              bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
               relabel_configs:
                 - source_labels: [handler]
                   regex: ^$
                   replacement: unknown
+                  target_label: handler
                   action: replace
     processors:
-      batch: {}
       memory_limiter:
         check_interval: 1s
         limit_percentage: 75
         spike_limit_percentage: 25
+      batch: {}
       resource:
         attributes:
           - key: source
             value: rhde
             action: insert
-          # rimuovi label che generano errori 409
           - key: process.executable.path
             action: delete
           - key: process.command
@@ -74,7 +74,7 @@ spec:
       bearertokenauth:
         token: "<IL_TUO_BEARER_TOKEN>"
     service:
-      extensions: 
+      extensions:
         - bearertokenauth
       pipelines:
         metrics:
