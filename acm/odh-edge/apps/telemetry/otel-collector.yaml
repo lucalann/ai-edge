@@ -32,7 +32,7 @@ spec:
           cert_file: /etc/mco/certs/tls.crt
           key_file: /etc/mco/certs/tls.key
           ca_file: /etc/mco/ca/ca.crt
-		      insecure: true
+          insecure: true
           insecure_skip_verify: true
         resource_to_telemetry_conversion:
           enabled: true
