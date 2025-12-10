@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: opendatahub-edge-collector
 
 resources:
-  - namespace.yaml
+  #- namespace.yaml
   - otel-collector.yaml
-  - role.yaml
-  - role-binding.yaml
+  #- role.yaml
+  #- role-binding.yaml
