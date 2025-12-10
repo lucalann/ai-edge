@@ -39,8 +39,6 @@ spec:
           enabled: true
     processors:
       batch:
-        send_batch_size: 10000
-        timeout: 1s
       memory_limiter:
         check_interval: 1s
         limit_percentage: 75
