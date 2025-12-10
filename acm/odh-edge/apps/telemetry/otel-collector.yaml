@@ -72,7 +72,7 @@ spec:
               bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
               static_configs:
                 - targets:
-                    - "prometheus-k8s.openshift-monitoring.svc:9091"
+                    - "prometheus-k8s.openshift-monitoring.svc:9091/api/ds/query?ds_type=prometheus&requestId=explore_umv"
               tls_config:
                 insecure_skip_verify: true
     service:
