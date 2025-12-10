@@ -20,8 +20,6 @@ spec:
       mountPath: /etc/mco/ca
     - name: mco-certs
       mountPath: /etc/mco/certs
-    - name: otel-certs
-      mountPath: /etc/otel/certs
   config:
     exporters:
       debug:
