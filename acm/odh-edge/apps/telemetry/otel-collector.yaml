@@ -2,7 +2,7 @@ apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
   name: otel
-  namespace:  opendatahub-edge-collector
+  namespace: open-cluster-management-observability
   annotations:
     service.beta.openshift.io/serving-cert-secret-name: otel-serving-cert
 spec:
@@ -30,7 +30,7 @@ spec:
       debug:
         verbosity: detailed
       prometheusremotewrite:
-        endpoint: https://observatorium-api-open-cluster-management-observability.apps.demo.ecoeng-flightctl.devcluster.openshift.com/api/metrics/v1/default/api/v1/receive
+        endpoint: https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/metrics/v1/default/api/v1/receive
         tls:
           cert_file: /etc/mco/certs/tls.crt
           key_file: /etc/mco/certs/tls.key
@@ -56,29 +56,18 @@ spec:
           - key: process.command_line
             action: delete
     receivers:
-      prometheus:
-        config:
-          scrape_configs:
-            - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-              job_name: model-metrics
-              metrics_path: /metrics
-              scrape_interval: 5s
-              static_configs:
-                - targets:
-                    - edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local
-      #otlp:
-       # protocols:
-        #  grpc:
-         #   endpoint: 0.0.0.0:4317
-          #  tls:
-           #   cert_file: /etc/otel/certs/tls.crt
-            #  key_file: /etc/otel/certs/tls.key
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+            tls:
+              cert_file: /etc/otel/certs/tls.crt
+              key_file: /etc/otel/certs/tls.key
     service:
       pipelines:
         metrics:
           receivers:
-            #- otlp
-            - prometheus
+            - otlp
           processors:
             - memory_limiter
             - resource
