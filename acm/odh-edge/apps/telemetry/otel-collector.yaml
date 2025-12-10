@@ -4,7 +4,7 @@ metadata:
   name: otel
   namespace:  open-cluster-management-addon-observability
   annotations:
-    service.beta.openshift.io/serving-cert-secret-name: otel-serving-cert
+    #service.beta.openshift.io/serving-cert-secret-name: otel-serving-cert
 spec:
   mode: deployment
   replicas: 1
