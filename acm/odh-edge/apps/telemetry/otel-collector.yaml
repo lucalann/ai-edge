@@ -34,9 +34,10 @@ spec:
             - job_name: thanos
               scrape_interval: 5s
               scheme: https
+              bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
               static_configs:
                 - targets:
-                    - "thanos-querier.openshift-monitoring.svc.cluster.local:9091/metrics"
+                    - "thanos-querier.openshift-monitoring.svc.cluster.local:9091"
               tls_config:
                 insecure_skip_verify: true
 
