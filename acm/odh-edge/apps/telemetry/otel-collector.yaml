@@ -91,6 +91,7 @@ spec:
             - memory_limiter
             - resource
             - batch
+            - filter/metrics
           exporters:
             - debug
             - prometheusremotewrite
