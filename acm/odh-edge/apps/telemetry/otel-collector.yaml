@@ -30,7 +30,7 @@ spec:
       debug:
         verbosity: detailed
       prometheusremotewrite:
-        endpoint: https://observatorium-api-open-cluster-management-observability.apps.demo.ecoeng-flightctl.devcluster.openshift.com/api/metrics/v1/default/api/v1/receive
+        endpoint: https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/metrics/v1/default/api/v1/receive
         tls:
           cert_file: /etc/mco/certs/tls.crt
           key_file: /etc/mco/certs/tls.key
