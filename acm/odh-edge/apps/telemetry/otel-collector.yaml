@@ -2,9 +2,7 @@ apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
   name: otel
-  namespace:  open-cluster-management-addon-observability
-  annotations:
-    #service.beta.openshift.io/serving-cert-secret-name: otel-serving-cert
+  namespace: open-cluster-management-addon-observability
 spec:
   mode: deployment
   replicas: 1
@@ -20,18 +18,28 @@ spec:
       mountPath: /etc/mco/ca
     - name: mco-certs
       mountPath: /etc/mco/certs
+
   config:
-    exporters:
-      debug:
-        verbosity: detailed
-      prometheusremotewrite:
-        endpoint: https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/metrics/v1/default/api/v1/receive
-        tls:
-          cert_file: /etc/mco/certs/tls.crt
-          key_file: /etc/mco/certs/tls.key
-          ca_file: /etc/mco/ca/ca.crt
-        resource_to_telemetry_conversion:
-          enabled: true
+    receivers:
+      # REQUIRED - o il pipeline va in errore
+      otlp:
+        protocols:
+          grpc: {}
+          http: {}
+
+      # Prometheus scrape da Thanos
+      prometheus:
+        config:
+          scrape_configs:
+            - job_name: thanos
+              scrape_interval: 5s
+              scheme: https
+              static_configs:
+                - targets:
+                    - "thanos-querier.openshift-monitoring.svc.cluster.local:9091"
+              tls_config:
+                insecure_skip_verify: true
+
     processors:
       batch: {}
       memory_limiter:
@@ -43,28 +51,30 @@ spec:
           - key: source
             value: rhde
             action: insert
-          # fix "Permanent error: Permanent error: Permanent error: remote write returned HTTP status 409 Conflict; err = %!w(<nil>): add 1377 series: label set contains a label with empty name or value
           - key: process.executable.path
             action: delete
           - key: process.command
             action: delete
           - key: process.command_line
             action: delete
-    receivers:
-      prometheus:
-        config:
-          scrape_configs:
-          - job_name: opentelemetry-collector
-            scrape_interval: 5s
-            static_configs:
-            - targets:
-              - thanos-querier.openshift-monitoring.svc.cluster.local:9091
-            tls_config:
-              insecure_skip_verify: true
+
+    exporters:
+      debug:
+        verbosity: detailed
+      prometheusremotewrite:
+        endpoint: https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/metrics/v1/default/api/v1/receive
+        tls:
+          cert_file: /etc/mco/certs/tls.crt
+          key_file: /etc/mco/certs/tls.key
+          ca_file: /etc/mco/ca/ca.crt
+        resource_to_telemetry_conversion:
+          enabled: true
+
     service:
       pipelines:
         metrics:
           receivers:
+            - otlp
             - prometheus
           processors:
             - memory_limiter
