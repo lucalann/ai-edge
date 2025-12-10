@@ -39,6 +39,10 @@ spec:
               static_configs:
                 - targets:
                     - 'edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local'
+              metric_relabel_configs:
+              - regex: ^$
+                action: drop
+                source_labels: [__name__]
 
     processors:
       batch: {}
