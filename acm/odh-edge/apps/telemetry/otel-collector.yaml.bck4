@@ -31,14 +31,15 @@ spec:
       prometheus:
         config:
           scrape_configs:
-            # service/vllm in ns/llama-serve
-            # add any service.ns.svc.cluster.local:port that includes a /metrics endpoint
-            # If you use otel-sidecars in each deployment, you do not need to list them here.
-            - job_name: vllm-llama-serve
-              scrape_interval: 15s
+            - job_name: thanos
+              scrape_interval: 5s
+              scheme: https
+              bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
               static_configs:
                 - targets:
-                    - 'edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local'
+                    - "thanos-querier.openshift-monitoring.svc.cluster.local:9091"
+              tls_config:
+                insecure_skip_verify: true
 
     processors:
       batch: {}
