@@ -55,6 +55,12 @@ spec:
             action: delete
           - key: process.command_line
             action: delete
+      filter/metrics:
+        metrics:
+          include:
+            match_type: strict
+            metric_names:
+              - vllm:generation_tokens_total
     receivers:
       otlp:
         protocols:
@@ -72,7 +78,7 @@ spec:
               bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
               static_configs:
                 - targets:
-                    - "prometheus-k8s.openshift-monitoring.svc:9091/api/ds/query?ds_type=prometheus&requestId=explore_umv"
+                    - "edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local"
               tls_config:
                 insecure_skip_verify: true
     service:
