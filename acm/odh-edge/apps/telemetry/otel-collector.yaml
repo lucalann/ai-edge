@@ -15,9 +15,6 @@ spec:
     - name: mco-certs
       secret:
         secretName: observability-controller-open-cluster-management.io-observability-signer-client-cert
-    - name: otel-certs
-      secret:
-        secretName: otel-serving-cert
   volumeMounts:
     - name: mco-ca
       mountPath: /etc/mco/ca
