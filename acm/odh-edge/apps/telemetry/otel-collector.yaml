@@ -58,7 +58,7 @@ spec:
             scrape_interval: 5s
             static_configs:
             - targets:
-              - https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
+              - thanos-querier.openshift-monitoring.svc.cluster.local:9091
             tls_config:
               insecure_skip_verify: true
     service:
