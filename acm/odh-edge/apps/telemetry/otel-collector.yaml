@@ -61,6 +61,10 @@ spec:
             match_type: strict
             metric_names:
               - vllm:generation_tokens_total
+      attributes/remove-empty:
+        actions:
+        - action: delete
+          pattern: ^$
     receivers:
       otlp:
         protocols:
@@ -92,6 +96,7 @@ spec:
             - resource
             - batch
             - filter/metrics
+            - attributes/remove-empty
           exporters:
             - debug
             - prometheusremotewrite
