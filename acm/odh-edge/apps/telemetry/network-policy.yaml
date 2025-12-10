@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-egress-to-openshift-monitoring
+  namespace: open-cluster-management-addon-observability
+spec:
+  podSelector: {}   # Applica a tutti i Pod del namespace
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-monitoring
+      # Nessuna sezione "ports" → tutte le porte/protocolli sono permessi
+

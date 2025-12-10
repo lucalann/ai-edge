@@ -56,13 +56,16 @@ spec:
           - key: process.command_line
             action: delete
     receivers:
-      otlp:
-        protocols:
-          grpc:
-            endpoint: 0.0.0.0:4317
-            tls:
-              cert_file: /etc/otel/certs/tls.crt
-              key_file: /etc/otel/certs/tls.key
+      prometheus:
+        config:
+          scrape_configs:
+          - job_name: opentelemetry-collector
+            scrape_interval: 5s
+            static_configs:
+            - targets:
+              - https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
+            - tls_config:
+                insecure_skip_verify: true
     service:
       pipelines:
         metrics:
