@@ -66,18 +66,19 @@ spec:
               static_configs:
                 - targets:
                     - edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local
-      otlp:
-        protocols:
-          grpc:
-            endpoint: 0.0.0.0:4317
-            tls:
-              cert_file: /etc/otel/certs/tls.crt
-              key_file: /etc/otel/certs/tls.key
+      #otlp:
+       # protocols:
+        #  grpc:
+         #   endpoint: 0.0.0.0:4317
+          #  tls:
+           #   cert_file: /etc/otel/certs/tls.crt
+            #  key_file: /etc/otel/certs/tls.key
     service:
       pipelines:
         metrics:
           receivers:
-            - otlp
+            #- otlp
+            - prometheus
           processors:
             - memory_limiter
             - resource
