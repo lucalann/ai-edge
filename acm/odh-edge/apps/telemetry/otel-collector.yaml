@@ -36,7 +36,7 @@ spec:
               scheme: https
               static_configs:
                 - targets:
-                    - "thanos-querier.openshift-monitoring.svc.cluster.local:9091"
+                    - "thanos-querier.openshift-monitoring.svc.cluster.local:9091/metrics"
               tls_config:
                 insecure_skip_verify: true
 
