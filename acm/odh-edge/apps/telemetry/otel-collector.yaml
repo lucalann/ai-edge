@@ -65,7 +65,7 @@ spec:
       pipelines:
         metrics:
           receivers:
-            - otlp
+            - prometheus
           processors:
             - memory_limiter
             - resource
