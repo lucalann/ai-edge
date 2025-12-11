@@ -31,12 +31,13 @@ spec:
           - key: source
             value: "edge-collector"
             action: insert
+
       filter/metrics:
         metrics:
           include:
-            match_type: strict
+          match_type: regexp
             metric_names:
-              - vllm:request_generation_tokens_sum
+              - "vllm.*tokens.*"
 
     exporters:
       prometheusremotewrite:
