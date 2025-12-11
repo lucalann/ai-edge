@@ -30,7 +30,7 @@ spec:
       debug:
         verbosity: detailed
       prometheusremotewrite:
-        endpoint: https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/metrics/v1/default/api/v1/receive
+        endpoint: https://thanos-querier-openshift-monitoring.apps.baremetal2.acic.local/api
         tls:
           cert_file: /etc/mco/certs/tls.crt
           key_file: /etc/mco/certs/tls.key
@@ -43,18 +43,6 @@ spec:
         check_interval: 1s
         limit_percentage: 75
         spike_limit_percentage: 25
-      resource:
-        attributes:
-          - key: source
-            value: rhde
-            action: insert
-          # fix "Permanent error: Permanent error: Permanent error: remote write returned HTTP status 409 Conflict; err = %!w(<nil>): add 1377 series: label set contains a label with empty name or value
-          - key: process.executable.path
-            action: delete
-          - key: process.command
-            action: delete
-          - key: process.command_line
-            action: delete
       filter/metrics:
         metrics:
           include:
