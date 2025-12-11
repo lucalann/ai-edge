@@ -30,7 +30,7 @@ spec:
       debug:
         verbosity: detailed
       prometheusremotewrite:
-        endpoint: https://thanos-querier-openshift-monitoring.apps.baremetal2.acic.local/api
+        endpoint: https://thanos-querier-openshift-monitoring.apps.baremetal2.acic.local/api/v1/write
         tls:
           cert_file: /etc/mco/certs/tls.crt
           key_file: /etc/mco/certs/tls.key
