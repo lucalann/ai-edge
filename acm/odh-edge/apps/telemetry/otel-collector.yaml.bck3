@@ -1,60 +1,69 @@
-apiVersion: opentelemetry.io/v1alpha1
+apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
-  name: cluster-collector
-  namespace: opendatahub-edge-collector
+  name: otel
+  namespace: open-cluster-management-observability
 spec:
   mode: deployment
-  observability:
-    metrics:
-      enableMetrics: true
+  replicas: 1
 
-  config: |
+  config:
+    extensions:
+      bearertokenauth:
+        token: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkWHhoRER4R09PM1pHRXNMSlBWTmR
+QZDl0aWVVcHpKbVYxX3ZMaEpNTVEifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjIl0sImV4cCI6MTc5Njk5ODQ1NiwiaWF0IjoxNz
+Y1NDYyNDU2LCJpc3MiOiJodHRwczovL2t1YmVybmV0ZXMuZGVmYXVsdC5zdmMiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6Im9wZW5zaGlmdC1tb25p
+dG9yaW5nIiwic2VydmljZWFjY291bnQiOnsibmFtZSI6InByb21ldGhldXMtazhzIiwidWlkIjoiMzg1YWFhYWQtZWEwNC00ZWJmLWJjZjYtOTI3MzAxY2FkZj
+EwIn19LCJuYmYiOjE3NjU0NjI0NTYsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpvcGVuc2hpZnQtbW9uaXRvcmluZzpwcm9tZXRoZXVzLWs4cyJ9.Ncs
+gnA7c3bWHO8verbsAv0Yy7skFP083Pg3YmZ_9IQdqdwwzUhw4zobCgZEWBTYlNSY3fBogSYtVU6kmzO3ohnQQ04pEYrrvDCwTDXT5L0OM_AYFy3g6Kr2sI78G_
+1ArW-p4k-8nHsXyQtguuU8kI5mSS2X3KuIgXXTcPKMo24h4_7EctA5qtpcYokGRWXS9k2rbbNf9U2e9i5yj_XaJL9463i_jLC-lff2_spaJIzLY26YwlKALqNH
+G0T5Gi8eekgK8-byWy601uKPvqJP8oJdgOcfY411HOjbij279k8YjMVF_ETIQiJmWSKR0OhsLEejL_48XwBjoZBRH88g2oxYZq47DX2HRam8Ec02ZxIUbiKO2W
+HjHihikhOUBKOqqOq9bWRuJFutBSXZWYi6RTASwRh1apMN4QqtXY5N3VyRXWSSf7WIYWgamdPLytfZ5QFipxvW04omIJ5WaLlTKyw3Rz15IJ6CTb9dvVVE6ioD
+utr8rJrtZD-1HAo1bOwTluDGUAKOzoNqNXbzs0qNk49FjqkfznrxTrFp1CwZOQAfKFjTZO8veam0fI0IqDdOVZefq9hti_YDuhv1uBC31T9JWudCM310BKNrP4
+2ZIyUdf4V-qHMnQcCMedHtpKxs66BrajuXLNgXdkdZWADeWTjMvFwy_M43QtRVSbOEDRZQ"
+
     receivers:
       prometheus:
         config:
           scrape_configs:
-            - job_name: model-metrics
-              metrics_path: /metrics
+            - job_name: edge-inference
               scrape_interval: 5s
-              bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
               static_configs:
                 - targets:
-                    - edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local
+                    - "edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local:80"
+              tls_config:
+                insecure_skip_verify: true
+
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
 
     processors:
-      batch:
-        timeout: 5s
-        send_batch_size: 1000
-      attributes:
-        actions:
-          - key: source
-            value: "edge-collector"
-            action: insert
+      batch: {}
+      memory_limiter:
+        limit_percentage: 75
+        spike_limit_percentage: 25
+        check_interval: 1s
 
     exporters:
       prometheusremotewrite:
-        endpoint: "https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/metrics/v1/default/api/v1/receive"
-
+        endpoint: "https://thanos-querier-openshift-monitoring.apps.baremetal2.acic.local/api/v1/receive"
         auth:
           authenticator: bearertokenauth
-
         tls:
-          ca_file: "/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
           insecure: true
           insecure_skip_verify: true
 
       debug:
-        verbosity: detailed
-
-    extensions:
-      bearertokenauth:
-        token: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkWHhoRER4R09PM1pHRXNMSlBWTmRQZDl0aWVVcHpKbVYxX3ZMaEpNTVEifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjIl0sImV4cCI6MTc5NjQ4ODIwMywiaWF0IjoxNzY0OTUyMjAzLCJpc3MiOiJodHRwczovL2t1YmVybmV0ZXMuZGVmYXVsdC5zdmMiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6Im9wZW4tY2x1c3Rlci1tYW5hZ2VtZW50LW9ic2VydmFiaWxpdHkiLCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZWRnZS1tZXRyaWNzLXdyaXRlciIsInVpZCI6IjEwNDlkNzJhLTBkMzQtNGJkYS1hMzU4LTA3MjhhNDViYWE1ZiJ9fSwibmJmIjoxNzY0OTUyMjAzLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6b3Blbi1jbHVzdGVyLW1hbmFnZW1lbnQtb2JzZXJ2YWJpbGl0eTplZGdlLW1ldHJpY3Mtd3JpdGVyIn0.R0Jr7ve3HBEM2jwzy3NGPjMP5NqRsjeiO51nVnIeey58wFLGKjzYSRKiobkhVnhDxUHcBoR2QXOrjTfLKgrk4ywIJONCZ_adbmCUYGSURm8MXtL7cYzzZY82eVqhwh28HRiSyps5K479u7feuu7tW7wlQVhomnhgOzpYIg4if17sa1TiQ8XmH23fxKxuKkcDlk3MRMBT0kHPTTOqsky4Bu0NdHis5jqoYSykFSncTg6ZfTi3NGQ95BhM-G2pDjBHZW6JycKQZTCdtrKtthFuBB1o-qORkFaMA2y9FreCEvkHOwvCxfo-QCES-EeZIzQL2mnn-Fm_7DI-0J0PFI5ZbrvAwcUQxDzUQs2uvDPq60L39Z-ZHLVyBOkjDMEPzN1EVIkor51C6ZKutUltpvLr51d-6gbJk7Fd0JvCWM_2L-wRYCgxQHQQ4qSznjqeTzpQFxElueqL3jqfT0dpy0d7NTdUb0kURotG3Xg2xvtNUdjTb-TykFHkxgMDO8cACy2jZbdLH9aodTaTwLuv6Wqkntzqfl0hHzZPBXQDCd4WfM_b_xETCHhK94v6R1cg5B097QiP5_4NTyW1mc-JkXq05IXr2GIhlAfimatYj41KX7PMFd57FeLFUq1Gtvfj2oC9HslPgZ_shncEp7fcwbnL4w_1I6JREJuZI7RgaKvnawY"
+        verbosity: normal
 
     service:
-      extensions: [bearertokenauth]
+      extensions:
+        - bearertokenauth
       pipelines:
         metrics:
-          receivers: [prometheus]
-          processors: [attributes, batch]
+          receivers: [prometheus, otlp]
+          processors: [memory_limiter, batch]
           exporters: [prometheusremotewrite, debug]
+ 
