@@ -37,7 +37,7 @@ spec:
           ca_file: /etc/mco/ca/ca.crt
         resource_to_telemetry_conversion:
           enabled: true
-                auth:
+        auth:
           authenticator: bearertokenauth
 
         tls:
