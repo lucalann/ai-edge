@@ -31,7 +31,6 @@ spec:
           - key: source
             value: "edge-collector"
             action: insert
-
       filter/metrics:
         metrics:
           include:
