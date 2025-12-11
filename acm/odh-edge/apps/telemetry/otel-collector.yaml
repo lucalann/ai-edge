@@ -45,6 +45,16 @@ spec:
             action: delete
           - key: model_name
             action: delete
+      transform:
+        metrics:
+          - include: ".*"             # tutte le metriche
+            match_type: regexp
+            action: update
+            operations:
+              - action: update_label
+                label: ".*"           # tutte le label
+                value: "${label}|unknown"
+                pattern: "^$"          # intercetta label vuote
 
       filter:
         metrics:
@@ -79,7 +89,7 @@ spec:
       pipelines:
         metrics:
           receivers: [prometheus]
-          processors: [attributes, batch, filter]
+          processors: [attributes, batch, filter, transform]
           exporters: [prometheusremotewrite, debug]
       telemetry:
         logs:
