@@ -1,8 +1,10 @@
-apiVersion: opentelemetry.io/v1alpha1
+apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
-  name: cluster-collector
-  namespace: open-cluster-management-addon-observability
+  name: otel
+  namespace: opendatahub-edge-collector
+  annotations:
+    service.beta.openshift.io/serving-cert-secret-name: otel-serving-cert
 spec:
   mode: deployment
   replicas: 1
@@ -18,8 +20,7 @@ spec:
       mountPath: /etc/mco/ca
     - name: mco-certs
       mountPath: /etc/mco/certs
-
-  config: |
+  config:
     receivers:
       prometheus:
         config:
@@ -31,67 +32,60 @@ spec:
               static_configs:
                 - targets:
                     - edge-inference-predictor-model-deploy.apps.singlenodeopenshift.acic.local
-
     processors:
-      batch:
-        timeout: 5s
-        send_batch_size: 1000
-      attributes:
-        actions:
+      memory_limiter:
+        check_interval: 1s
+        limit_percentage: 75
+        spike_limit_percentage: 25
+      batch: {}
+      resource:
+        attributes:
           - key: source
-            value: "edge-collector"
+            value: rhde
             action: insert
-          - key: engine
+          - key: process.executable.path
             action: delete
-          - key: model_name
+          - key: process.command
             action: delete
-      transform:
-        metrics:
-          - include: ".*"             # tutte le metriche
-            match_type: regexp
-            action: update
-            operations:
-              - action: update_label
-                label: ".*"           # tutte le label
-                value: "${label}|unknown"
-                pattern: "^$"          # intercetta label vuote
-
-      filter:
-        metrics:
-          include:
-            match_type: regexp
-            metric_names:
-              - vllm*
-
+          - key: process.command_line
+            action: delete
     exporters:
+      debug:
+        verbosity: detailed
       prometheusremotewrite:
-        endpoint: "https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/metrics/v1/default/api/v1/receive"
-        auth:
-          authenticator: bearertokenauth
+        endpoint: https://observatorium-api-open-cluster-management-observability.apps.baremetal2.acic.local/api/metrics/v1/default/api/v1/receive
         tls:
-          insecure: true
-          insecure_skip_verify: true
           cert_file: /etc/mco/certs/tls.crt
           key_file: /etc/mco/certs/tls.key
           ca_file: /etc/mco/ca/ca.crt
-        resource_to_telemetry_conversion:
-          enabled: true
-
-      debug:
-        verbosity: detailed
-
+          insecure: true
+          insecure_skip_verify: true
+        auth:
+          authenticator: bearertokenauth
     extensions:
       bearertokenauth:
-        token: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkWHhoRER4R09PM1pHRXNMSlBWTmRQZDl0aWVVcHpKbVYxX3ZMaEpNTVEifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjIl0sImV4cCI6MTc5Njk5ODQ1NiwiaWF0IjoxNzY1NDYyNDU2LCJpc3MiOiJodHRwczovL2t1YmVybmV0ZXMuZGVmYXVsdC5zdmMiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6Im9wZW5zaGlmdC1tb25pdG9yaW5nIiwic2VydmljZWFjY291bnQiOnsibmFtZSI6InByb21ldGhldXMtazhzIiwidWlkIjoiMzg1YWFhYWQtZWEwNC00ZWJmLWJjZjYtOTI3MzAxY2FkZjEwIn19LCJuYmYiOjE3NjU0NjI0NTYsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpvcGVuc2hpZnQtbW9uaXRvcmluZzpwcm9tZXRoZXVzLWs4cyJ9.NcsgnA7c3bWHO8verbsAv0Yy7skFP083Pg3YmZ_9IQdqdwwzUhw4zobCgZEWBTYlNSY3fBogSYtVU6kmzO3ohnQQ04pEYrrvDCwTDXT5L0OM_AYFy3g6Kr2sI78G_1ArW-p4k-8nHsXyQtguuU8kI5mSS2X3KuIgXXTcPKMo24h4_7EctA5qtpcYokGRWXS9k2rbbNf9U2e9i5yj_XaJL9463i_jLC-lff2_spaJIzLY26YwlKALqNHG0T5Gi8eekgK8-byWy601uKPvqJP8oJdgOcfY411HOjbij279k8YjMVF_ETIQiJmWSKR0OhsLEejL_48XwBjoZBRH88g2oxYZq47DX2HRam8Ec02ZxIUbiKO2WHjHihikhOUBKOqqOq9bWRuJFutBSXZWYi6RTASwRh1apMN4QqtXY5N3VyRXWSSf7WIYWgamdPLytfZ5QFipxvW04omIJ5WaLlTKyw3Rz15IJ6CTb9dvVVE6ioDutr8rJrtZD-1HAo1bOwTluDGUAKOzoNqNXbzs0qNk49FjqkfznrxTrFp1CwZOQAfKFjTZO8veam0fI0IqDdOVZefq9hti_YDuhv1uBC31T9JWudCM310BKNrP42ZIyUdf4V-qHMnQcCMedHtpKxs66BrajuXLNgXdkdZWADeWTjMvFwy_M43QtRVSbOEDRZQ"
-
+        token: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkWHhoRER4R09PM1
+pHRXNMSlBWTmRQZDl0aWVVcHpKbVYxX3ZMaEpNTVEifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjIl0sImV4cCI6MTc5Njk5ODQ1N
+iwiaWF0IjoxNzY1NDYyNDU2LCJpc3MiOiJodHRwczovL2t1YmVybmV0ZXMuZGVmYXVsdC5zdmMiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6Im9wZW5
+zaGlmdC1tb25pdG9yaW5nIiwic2VydmljZWFjY291bnQiOnsibmFtZSI6InByb21ldGhldXMtazhzIiwidWlkIjoiMzg1YWFhYWQtZWEwNC00ZWJmLWJjZjYtO
+TI3MzAxY2FkZjEwIn19LCJuYmYiOjE3NjU0NjI0NTYsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpvcGVuc2hpZnQtbW9uaXRvcmluZzpwcm9tZXRoZXV
+zLWs4cyJ9.NcsgnA7c3bWHO8verbsAv0Yy7skFP083Pg3YmZ_9IQdqdwwzUhw4zobCgZEWBTYlNSY3fBogSYtVU6kmzO3ohnQQ04pEYrrvDCwTDXT5L0OM_AYF
+y3g6Kr2sI78G_1ArW-p4k-8nHsXyQtguuU8kI5mSS2X3KuIgXXTcPKMo24h4_7EctA5qtpcYokGRWXS9k2rbbNf9U2e9i5yj_XaJL9463i_jLC-lff2_spaJIz
+LY26YwlKALqNHG0T5Gi8eekgK8-byWy601uKPvqJP8oJdgOcfY411HOjbij279k8YjMVF_ETIQiJmWSKR0OhsLEejL_48XwBjoZBRH88g2oxYZq47DX2HRam8E
+c02ZxIUbiKO2WHjHihikhOUBKOqqOq9bWRuJFutBSXZWYi6RTASwRh1apMN4QqtXY5N3VyRXWSSf7WIYWgamdPLytfZ5QFipxvW04omIJ5WaLlTKyw3Rz15IJ6
+CTb9dvVVE6ioDutr8rJrtZD-1HAo1bOwTluDGUAKOzoNqNXbzs0qNk49FjqkfznrxTrFp1CwZOQAfKFjTZO8veam0fI0IqDdOVZefq9hti_YDuhv1uBC31T9JW
+udCM310BKNrP42ZIyUdf4V-qHMnQcCMedHtpKxs66BrajuXLNgXdkdZWADeWTjMvFwy_M43QtRVSbOEDRZQ"
     service:
-      extensions: [bearertokenauth]
+      extensions:
+        - bearertokenauth
       pipelines:
         metrics:
-          receivers: [prometheus]
-          processors: [attributes, batch, filter, transform]
-          exporters: [prometheusremotewrite, debug]
-      telemetry:
-        logs:
-          level: "debug"   # <-- livello di log impostato a DEBUG
-          encoding: "console"
+          receivers:
+            - prometheus
+          processors:
+            - memory_limiter
+            - resource
+            - batch
+          exporters:
+            - debug
+            - prometheusremotewrite
