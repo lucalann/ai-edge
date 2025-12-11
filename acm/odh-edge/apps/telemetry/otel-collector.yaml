@@ -81,7 +81,7 @@ spec:
             - prometheus
           processors:
             - memory_limiter
-            - resource
+            #- resource
             - batch
             - filter/metrics
             - attributes/drop-empty
