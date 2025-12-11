@@ -48,9 +48,9 @@ spec:
         debug:
           verbosity: detailed
 
-        extensions:
-          bearertokenauth:
-            token: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkWHhoRER4R09PM1pHRXNMSlBWTmR
+    extensions:
+      bearertokenauth:
+        token: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkWHhoRER4R09PM1pHRXNMSlBWTmR
 QZDl0aWVVcHpKbVYxX3ZMaEpNTVEifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjIl0sImV4cCI6MTc5Njk5ODQ1NiwiaWF0IjoxNz
 Y1NDYyNDU2LCJpc3MiOiJodHRwczovL2t1YmVybmV0ZXMuZGVmYXVsdC5zdmMiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6Im9wZW5zaGlmdC1tb25p
 dG9yaW5nIiwic2VydmljZWFjY291bnQiOnsibmFtZSI6InByb21ldGhldXMtazhzIiwidWlkIjoiMzg1YWFhYWQtZWEwNC00ZWJmLWJjZjYtOTI3MzAxY2FkZj
