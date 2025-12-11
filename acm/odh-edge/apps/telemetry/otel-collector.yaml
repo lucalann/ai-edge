@@ -34,9 +34,9 @@ spec:
       filter:
         metrics:
           include:
-            match_type: strict
+            match_type: regexp
             metric_names:
-              - vllm:request_generation_tokens_sum
+              - vllm*
 
     exporters:
       prometheusremotewrite:
