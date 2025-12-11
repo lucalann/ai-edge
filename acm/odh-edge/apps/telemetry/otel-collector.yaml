@@ -44,24 +44,16 @@ spec:
         auth:
           authenticator: bearertokenauth
         tls:
+          ca_file: "/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
+          insecure: true
           insecure_skip_verify: true
 
-      logging:
-        loglevel: debug
+      debug:
+        verbosity: detailed
 
     extensions:
       bearertokenauth:
-        token: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkWHhoRER4R09PM1pHRXNMSlBWTmRQZDl0aWVVcHpKbVYxX3ZMaEpNTVEifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5l
-dGVzLmRlZmF1bHQuc3ZjIl0sImV4cCI6MTc5Njk5ODQ1NiwiaWF0IjoxNzY1NDYyNDU2LCJpc3MiOiJodHRwczovL2t1YmVybmV0ZXMuZGVmYXVsdC5zdmMiLC
-JrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6Im9wZW5zaGlmdC1tb25pdG9yaW5nIiwic2VydmljZWFjY291bnQiOnsibmFtZSI6InByb21ldGhldXMtazhz
-IiwidWlkIjoiMzg1YWFhYWQtZWEwNC00ZWJmLWJjZjYtOTI3MzAxY2FkZjEwIn19LCJuYmYiOjE3NjU0NjI0NTYsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3
-VudDpvcGVuc2hpZnQtbW9uaXRvcmluZzpwcm9tZXRoZXVzLWs4cyJ9.NcsgnA7c3bWHO8verbsAv0Yy7skFP083Pg3YmZ_9IQdqdwwzUhw4zobCgZEWBTYlNSY
-3fBogSYtVU6kmzO3ohnQQ04pEYrrvDCwTDXT5L0OM_AYFy3g6Kr2sI78G_1ArW-p4k-8nHsXyQtguuU8kI5mSS2X3KuIgXXTcPKMo24h4_7EctA5qtpcYokGRW
-XS9k2rbbNf9U2e9i5yj_XaJL9463i_jLC-lff2_spaJIzLY26YwlKALqNHG0T5Gi8eekgK8-byWy601uKPvqJP8oJdgOcfY411HOjbij279k8YjMVF_ETIQiJm
-WSKR0OhsLEejL_48XwBjoZBRH88g2oxYZq47DX2HRam8Ec02ZxIUbiKO2WHjHihikhOUBKOqqOq9bWRuJFutBSXZWYi6RTASwRh1apMN4QqtXY5N3VyRXWSSf7
-WIYWgamdPLytfZ5QFipxvW04omIJ5WaLlTKyw3Rz15IJ6CTb9dvVVE6ioDutr8rJrtZD-1HAo1bOwTluDGUAKOzoNqNXbzs0qNk49FjqkfznrxTrFp1CwZOQAf
-KFjTZO8veam0fI0IqDdOVZefq9hti_YDuhv1uBC31T9JWudCM310BKNrP42ZIyUdf4V-qHMnQcCMedHtpKxs66BrajuXLNgXdkdZWADeWTjMvFwy_M43QtRVSb
-OEDRZQ"
+        token: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkWHhoRER4R09PM1pHRXNMSlBWTmRQZDl0aWVVcHpKbVYxX3ZMaEpNTVEifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjIl0sImV4cCI6MTc5Njk5ODQ1NiwiaWF0IjoxNzY1NDYyNDU2LCJpc3MiOiJodHRwczovL2t1YmVybmV0ZXMuZGVmYXVsdC5zdmMiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6Im9wZW5zaGlmdC1tb25pdG9yaW5nIiwic2VydmljZWFjY291bnQiOnsibmFtZSI6InByb21ldGhldXMtazhzIiwidWlkIjoiMzg1YWFhYWQtZWEwNC00ZWJmLWJjZjYtOTI3MzAxY2FkZjEwIn19LCJuYmYiOjE3NjU0NjI0NTYsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpvcGVuc2hpZnQtbW9uaXRvcmluZzpwcm9tZXRoZXVzLWs4cyJ9.NcsgnA7c3bWHO8verbsAv0Yy7skFP083Pg3YmZ_9IQdqdwwzUhw4zobCgZEWBTYlNSY3fBogSYtVU6kmzO3ohnQQ04pEYrrvDCwTDXT5L0OM_AYFy3g6Kr2sI78G_1ArW-p4k-8nHsXyQtguuU8kI5mSS2X3KuIgXXTcPKMo24h4_7EctA5qtpcYokGRWXS9k2rbbNf9U2e9i5yj_XaJL9463i_jLC-lff2_spaJIzLY26YwlKALqNHG0T5Gi8eekgK8-byWy601uKPvqJP8oJdgOcfY411HOjbij279k8YjMVF_ETIQiJmWSKR0OhsLEejL_48XwBjoZBRH88g2oxYZq47DX2HRam8Ec02ZxIUbiKO2WHjHihikhOUBKOqqOq9bWRuJFutBSXZWYi6RTASwRh1apMN4QqtXY5N3VyRXWSSf7WIYWgamdPLytfZ5QFipxvW04omIJ5WaLlTKyw3Rz15IJ6CTb9dvVVE6ioDutr8rJrtZD-1HAo1bOwTluDGUAKOzoNqNXbzs0qNk49FjqkfznrxTrFp1CwZOQAfKFjTZO8veam0fI0IqDdOVZefq9hti_YDuhv1uBC31T9JWudCM310BKNrP42ZIyUdf4V-qHMnQcCMedHtpKxs66BrajuXLNgXdkdZWADeWTjMvFwy_M43QtRVSbOEDRZQ"
 
     service:
       extensions: [bearertokenauth]
@@ -69,4 +61,4 @@ OEDRZQ"
         metrics:
           receivers: [prometheus]
           processors: [attributes, batch, filtermetrics]
-          exporters: [prometheusremotewrite, logging]
+          exporters: [prometheusremotewrite, debug]
