@@ -5,9 +5,19 @@ metadata:
   namespace: open-cluster-management-addon-observability
 spec:
   mode: deployment
-  observability:
-    metrics:
-      enableMetrics: true
+  replicas: 1
+  volumes:
+    - name: mco-ca
+      secret:
+        secretName: observability-managed-cluster-certs
+    - name: mco-certs
+      secret:
+        secretName: observability-controller-open-cluster-management.io-observability-signer-client-cert
+  volumeMounts:
+    - name: mco-ca
+      mountPath: /etc/mco/ca
+    - name: mco-certs
+      mountPath: /etc/mco/certs
 
   config: |
     receivers:
@@ -47,6 +57,11 @@ spec:
           ca_file: "/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
           insecure: true
           insecure_skip_verify: true
+          cert_file: /etc/mco/certs/tls.crt
+          key_file: /etc/mco/certs/tls.key
+          ca_file: /etc/mco/ca/ca.crt
+        resource_to_telemetry_conversion:
+          enabled: true
 
       debug:
         verbosity: detailed
