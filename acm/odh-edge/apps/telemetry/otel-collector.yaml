@@ -41,6 +41,12 @@ spec:
           - key: source
             value: "edge-collector"
             action: insert
+          - key: engine
+            action: upsert
+            value: unknown
+            - key: model_name
+              action: upsert
+              value: unknown
       filter:
         metrics:
           include:
