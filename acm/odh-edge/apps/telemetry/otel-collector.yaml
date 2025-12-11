@@ -31,7 +31,7 @@ spec:
           - key: source
             value: "edge-collector"
             action: insert
-      filter/metrics:
+      filtermetrics:
         metrics:
           include:
           match_type: regexp
@@ -60,5 +60,5 @@ spec:
       pipelines:
         metrics:
           receivers: [prometheus]
-          processors: [attributes, batch, filter/metrics]
+          processors: [attributes, batch, filtermetrics]
           exporters: [prometheusremotewrite, debug]
