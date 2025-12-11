@@ -37,6 +37,30 @@ spec:
           ca_file: /etc/mco/ca/ca.crt
         resource_to_telemetry_conversion:
           enabled: true
+                auth:
+          authenticator: bearertokenauth
+
+        tls:
+          ca_file: "/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
+          insecure: true
+          insecure_skip_verify: true
+
+        debug:
+          verbosity: detailed
+
+        extensions:
+          bearertokenauth:
+            token: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkWHhoRER4R09PM1pHRXNMSlBWTmR
+QZDl0aWVVcHpKbVYxX3ZMaEpNTVEifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjIl0sImV4cCI6MTc5Njk5ODQ1NiwiaWF0IjoxNz
+Y1NDYyNDU2LCJpc3MiOiJodHRwczovL2t1YmVybmV0ZXMuZGVmYXVsdC5zdmMiLCJrdWJlcm5ldGVzLmlvIjp7Im5hbWVzcGFjZSI6Im9wZW5zaGlmdC1tb25p
+dG9yaW5nIiwic2VydmljZWFjY291bnQiOnsibmFtZSI6InByb21ldGhldXMtazhzIiwidWlkIjoiMzg1YWFhYWQtZWEwNC00ZWJmLWJjZjYtOTI3MzAxY2FkZj
+EwIn19LCJuYmYiOjE3NjU0NjI0NTYsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpvcGVuc2hpZnQtbW9uaXRvcmluZzpwcm9tZXRoZXVzLWs4cyJ9.Ncs
+gnA7c3bWHO8verbsAv0Yy7skFP083Pg3YmZ_9IQdqdwwzUhw4zobCgZEWBTYlNSY3fBogSYtVU6kmzO3ohnQQ04pEYrrvDCwTDXT5L0OM_AYFy3g6Kr2sI78G_
+1ArW-p4k-8nHsXyQtguuU8kI5mSS2X3KuIgXXTcPKMo24h4_7EctA5qtpcYokGRWXS9k2rbbNf9U2e9i5yj_XaJL9463i_jLC-lff2_spaJIzLY26YwlKALqNH
+G0T5Gi8eekgK8-byWy601uKPvqJP8oJdgOcfY411HOjbij279k8YjMVF_ETIQiJmWSKR0OhsLEejL_48XwBjoZBRH88g2oxYZq47DX2HRam8Ec02ZxIUbiKO2W
+HjHihikhOUBKOqqOq9bWRuJFutBSXZWYi6RTASwRh1apMN4QqtXY5N3VyRXWSSf7WIYWgamdPLytfZ5QFipxvW04omIJ5WaLlTKyw3Rz15IJ6CTb9dvVVE6ioD
+utr8rJrtZD-1HAo1bOwTluDGUAKOzoNqNXbzs0qNk49FjqkfznrxTrFp1CwZOQAfKFjTZO8veam0fI0IqDdOVZefq9hti_YDuhv1uBC31T9JWudCM310BKNrP4
+2ZIyUdf4V-qHMnQcCMedHtpKxs66BrajuXLNgXdkdZWADeWTjMvFwy_M43QtRVSbOEDRZQ"
     processors:
       batch: {}
       memory_limiter:
