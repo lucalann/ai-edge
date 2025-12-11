@@ -64,7 +64,7 @@ spec:
       attributes/drop-empty:
         actions:
           - key: server.port
-          action: delete
+            action: delete
     receivers:
       otlp:
         protocols:
