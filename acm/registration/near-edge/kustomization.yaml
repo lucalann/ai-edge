@@ -5,8 +5,8 @@ resources:
 - openshift-gitops-managedclustersetbinding.yaml
 - openshift-gitops-placement.yaml
 - openshift-gitops-gitopscluster.yaml
-- overlays/bike-rental-app
-- overlays/tensorflow-housing-app
+#- overlays/bike-rental-app
+#- overlays/tensorflow-housing-app
 - overlays/opentelemetry
-- overlays/todo
+#- overlays/todo
 - overlays/model-deploy
