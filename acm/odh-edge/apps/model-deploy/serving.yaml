@@ -8,7 +8,6 @@ metadata:
     opendatahub.io/template-display-name: vLLM ServingRuntime for KServe CPU
     opendatahub.io/template-name: vllm-runtime-cpu
     openshift.io/display-name: vLLM-CPU
-  resourceVersion: '310671338'
   name: vllm-cpu
   namespace: model-deploy
   labels:
