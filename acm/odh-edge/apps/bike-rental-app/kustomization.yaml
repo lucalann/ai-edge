@@ -5,8 +5,8 @@ labels:
     pairs:
       app: bike-rental-app
 resources:
-  - ../../base
-  - bike-rental-inference-generator-cronjob.yaml
+  #- ../../base
+  #- bike-rental-inference-generator-cronjob.yaml
 namespace: bike-rental-app
 namePrefix: bike-rental-app-
 commonLabels:
