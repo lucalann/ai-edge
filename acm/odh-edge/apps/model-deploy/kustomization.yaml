@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: model-deploy
 
 resources:
-  - llama-32-3b-instruct-inference-service.yaml
+  #- llama-32-3b-instruct-inference-service.yaml
   - namespace.yaml
   - serving.yaml
   - llama-32-3b-instruct-route.yaml
