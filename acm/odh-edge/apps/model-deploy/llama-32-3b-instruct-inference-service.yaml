@@ -3,7 +3,7 @@ kind: InferenceService
 metadata:
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
-    argocd.argoproj.io/sync-options: Prune=false
+    argocd.argoproj.io/sync-options: Prune=true
     argocd.argoproj.io/sync-wave: '2'
     openshift.io/display-name: edge-inference
     serving.knative.openshift.io/enablePassthrough: 'true'
