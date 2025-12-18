@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: open-cluster-management-addon-observability
 
 resources:
-  #- namespace.yaml
-  - otel-collector.yaml
+  #- otel-collector.yaml
   - role.yaml
   - role-binding.yaml
